@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="content-language" content="zh-Hant-TW" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>WEEK1 關注點分離</title>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="" />
+  <meta property="og:title" content="" />
+  <meta property="og:description" content="" />
+  <meta property="og:image" content="" />
+  <meta property="og:url" content="" />
+  <link rel="stylesheet" href="vendor/css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="css/styles.css" type="text/css" />
+</head>
+
+<body>
+  <div class="document" id="app">
+    <div id="app" class="container my-3">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">待辦事項</span>
+        </div>
+        <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo">
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" id="addTodo">新增</button>
+        </div>
+      </div>
+      <div class="card text-center">
+        <ul class="list-group list-group-flush text-left" id="todoList">
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input">
+                <label class="form-check-label">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil inventore
+                  voluptas voluptate esse dolores ducimus illum voluptatem debitis quisquam suscipit! Enim, culpa qui
+                  autem molestiae consequatur quibusdam, perferendis temporibus nemo quod quam voluptatem ut tenetur
+                  possimus debitis! Cupiditate rerum, odio voluptas impedit quas molestias perspiciatis libero ducimus
+                  sequi error sint?</label>
+              </div>
+              <button type="button" class="close ml-auto" aria-label="Close">
+                <span aria-hidden="true" data-action="remove">&times;</span>
+              </button>
+            </div>
+          </li>
+        </ul>
+        <div class="card-footer d-flex justify-content-between">
+          <span>還有 <span id="taskCount">0</span> 筆任務</span>
+          <a href="#" id="clearTask">清除所有任務</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    /*
+      用戶可以新增 Todo，新增後移除 input 的項目
+      用戶可以刪除、完成 Todo
+      用戶可以一鍵刪除所有任務
+    */
+
+    /*
+      什麼是資料先分出來
+      分出處理資料的方式 render()
+    */
+
+    /*
+      1. input 使用者輸入為資料 data
+      2. 處理資料有三個地方: 新增、刪除單筆、刪除全部
+      
+    */
+
+    (function (global) {
+      // console.log(global);
+
+
+    }(window));
+
+  </script>
+</body>
+
+</html>
