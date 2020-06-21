@@ -28,60 +28,121 @@
         <div class="input-group-prepend">
           <span class="input-group-text">待辦事項</span>
         </div>
-        <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo">
+        <input type="text" class="form-control" placeholder="準備要做的任務" id="newTodo" value="">
         <div class="input-group-append">
-          <button class="btn btn-primary" type="button" id="addTodo">新增</button>
+          <button class="btn btn-primary" type="button" id="addTodoBtn">新增</button>
         </div>
       </div>
       <div class="card text-center">
-        <ul class="list-group list-group-flush text-left" id="todoList">
-          <li class="list-group-item">
-            <div class="d-flex">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input">
-                <label class="form-check-label">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil inventore
-                  voluptas voluptate esse dolores ducimus illum voluptatem debitis quisquam suscipit! Enim, culpa qui
-                  autem molestiae consequatur quibusdam, perferendis temporibus nemo quod quam voluptatem ut tenetur
-                  possimus debitis! Cupiditate rerum, odio voluptas impedit quas molestias perspiciatis libero ducimus
-                  sequi error sint?</label>
-              </div>
-              <button type="button" class="close ml-auto" aria-label="Close">
-                <span aria-hidden="true" data-action="remove">&times;</span>
-              </button>
-            </div>
-          </li>
-        </ul>
+        <ul class="list-group list-group-flush text-left" id="todoList"></ul>
         <div class="card-footer d-flex justify-content-between">
           <span>還有 <span id="taskCount">0</span> 筆任務</span>
-          <a href="#" id="clearTask">清除所有任務</a>
+          <a href="#" id="removeAllBtn">清除所有任務</a>
         </div>
       </div>
     </div>
   </div>
   <script>
     /*
+      WEEK1 
       用戶可以新增 Todo，新增後移除 input 的項目
       用戶可以刪除、完成 Todo
       用戶可以一鍵刪除所有任務
     */
 
     /*
-      什麼是資料先分出來
-      分出處理資料的方式 render()
-    */
-
-    /*
       1. input 使用者輸入為資料 data
       2. 處理資料有三個地方: 新增、刪除單筆、刪除全部
-      
+      3. 畫面 render 
     */
 
     (function (global) {
-      // console.log(global);
 
+      let todoData = JSON.parse(localStorage.getItem('todoData')) || []; // 資料存放 localStorage or []
+      let addTodoBtn = document.querySelector('#addTodoBtn'); //新增按鈕
+      let removeAllBtn = document.querySelector('#removeAllBtn'); //移除全部按鈕
+      let todoList = document.querySelector('#todoList');
+      let taskCount = document.querySelector('#taskCount');
+
+      function storageSet() { // localStorage.setItem
+        localStorage.setItem('todoData', JSON.stringify(todoData));
+      }
+
+      function addData() { //新增資料
+        let inputValue = document.querySelector('#newTodo').value; // 使用者輸入"資料"
+        todoData.push({
+          id: Math.floor(Date.now()),
+          text: inputValue,
+          completed: false
+        });
+        storageSet();
+        render();
+      }
+
+      function removeData(e) { //移除資料
+        todoData.splice(e.target.offsetParent.dataset.id, 1);
+        storageSet();
+        render();
+      }
+
+      function removeAllData() { //移除全部資料
+        todoData.splice(0, todoData.length);
+        storageSet();
+        render();
+      }
+
+      function checkCompleted(e) { // 已完成勾選
+        todoData.forEach(function (item) {
+          if (e.target.dataset.id == item.id) {
+            if (item.completed) {
+              item.completed = false;
+            } else {
+              item.completed = true;
+            }
+            storageSet();
+            render();
+          }
+        });
+      }
+
+      addTodoBtn.addEventListener('click', addData);
+      removeAllBtn.addEventListener('click', removeAllData);
+
+      function render() {
+        let storageData = JSON.parse(localStorage.getItem('todoData')) || [];
+        let str = '';
+        storageData.forEach(function (item, i) {
+          str += `
+            <li class="list-group-item" data-id="${i}">
+              <div class="d-flex">
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" ${item.completed ? 'checked' : ''} id="${item.id}" data-id="${item.id}">
+                  <label for="${item.id}" class="form-check-label ${item.completed ? 'completed' : ''}">${item.text}</label>
+                </div>
+                <button type="button" class="close ml-auto removeTodoBtn">
+                  <span>&times;</span>
+                </button>
+              </div>
+            </li>
+          `
+        });
+
+        todoList.innerHTML = str;
+        taskCount.innerText = storageData.length;
+
+        let removeTodoBtn = document.querySelectorAll('.removeTodoBtn'); //移除按鈕
+        removeTodoBtn.forEach(function (item) {
+          item.addEventListener('click', removeData);
+        });
+
+        let formCheckInput = document.querySelectorAll('.form-check-input'); // checkbox
+        formCheckInput.forEach(function (item) {
+          item.addEventListener('click', checkCompleted);
+        });
+      }
+      render();
 
     }(window));
-
   </script>
 </body>
 
