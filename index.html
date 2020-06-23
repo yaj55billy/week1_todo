@@ -139,6 +139,8 @@
         formCheckInput.forEach(function (item) {
           item.addEventListener('click', checkCompleted);
         });
+
+        document.querySelector('#newTodo').value = ''; //清除 input value
       }
       render();
 
